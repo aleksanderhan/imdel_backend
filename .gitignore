@@ -91,5 +91,5 @@ ENV/
 # Sqlite3 files
 *.sqlite3
 
-# User image folder
-user_images/
+# Uploaded image folder
+uploaded_images/
