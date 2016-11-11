@@ -16,8 +16,6 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
-from image_server import views
-
 
 urlpatterns = [
 	url(r'^upload_image/', include('image_server.urls')),

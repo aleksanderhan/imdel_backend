@@ -6,5 +6,5 @@ from .models import ImageModel
 class UploadImageForm(ModelForm):
     class Meta:
         model = ImageModel
-        fields = ['file']
+        fields = ['image', 'text', 'latitude', 'longitude']
 
