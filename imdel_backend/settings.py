@@ -25,7 +25,7 @@ SECRET_KEY = 'n)6^oe^)54@dv0g!__c+g@bu-61bqee)+*mfken+08x@d7p%!&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['46.101.109.17', 'imdel.tk']
 
 
 # Application definition

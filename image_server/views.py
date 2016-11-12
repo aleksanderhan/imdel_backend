@@ -8,6 +8,7 @@ from .models import ImageModel
 
 @csrf_exempt
 def upload_image(request):
+    print(request)
     if request.method == 'POST':
         form = UploadImageForm(request.POST, request.FILES)
         if form.is_valid():
