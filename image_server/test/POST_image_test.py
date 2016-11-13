@@ -11,9 +11,12 @@ server_adress = 'http://127.0.0.1:8000/upload_image'
 #server_adress = 'http://imdel.tk:8000/upload_image/'
 
 
-r = requests.post(server_adress, files = {'image' : open('test_image.png', 'rb')}, data=POST)
-print(r)
+#r = requests.post(server_adress, files = {'image' : open('test_image.png', 'rb')}, data=POST)
 
 #r = requests.post('http://127.0.0.1:8000/upload_image/', files = {'image' : open('test_image.png', 'rb')}, text='lorem ipsum', latitude='59.913869', longitude = '10.752245')
 
-print(r.text)
+#print(r.text)
+
+
+import os
+print os.path.abspath(os.path.join(os.path.abspath(__file__), os.pardir, os.pardir)) + '/uploaded_images'
