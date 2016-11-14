@@ -15,7 +15,7 @@ def upload_image(request):
         if form.is_valid():
             instance = ImageModel(
                 image = request.FILES['image'],
-                text = request.POST['text'], 
+                imageText = request.POST['imageText'], 
                 latitude = request.POST['latitude'], 
                 longitude = request.POST['longitude'])
             instance.save()

@@ -1,9 +1,9 @@
 import requests, json
 
 POST = 	{
-		'text' : 'lorem ipsum',
+		'imageText' : '',
 		'latitude' : '59.913869',
-		'longitude' : '10.752245'
+		'longitude' : '10.75225'
 		}
 
 server_adress = 'http://127.0.0.1:8000/upload_image'
