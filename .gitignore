@@ -93,3 +93,6 @@ ENV/
 
 # Images
 *.jpg
+
+# Folders
+/migrations
