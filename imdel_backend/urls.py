@@ -18,6 +18,6 @@ from django.contrib import admin
 
 
 urlpatterns = [
-	url(r'^upload_image', include('image_server.urls')),
+	url(r'^', include('image_server.urls')),
     url(r'^admin/', admin.site.urls),
 ]
