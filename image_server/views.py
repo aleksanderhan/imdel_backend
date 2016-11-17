@@ -1,8 +1,7 @@
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed, FileResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from math import cos, sin, acos, radians
-import json
+import json, base64
 
 from .forms import UploadImageForm
 from .models import ImageModel
@@ -67,15 +66,27 @@ def get_thumbnails(request):
         except ValueError:
             return HttpResponseBadRequest("400")
 
+
+        # Create sql query
         SQL = _create_sql(latitude, longitude, radius, amount, offset)
+        # Query database
+        query_result = ImageModel.objects.raw(SQL)
 
-        '''
-        for p in ImageModel.objects.raw(SQL):
-            print p.id, p.image
-        '''
+        for q in query_result:
+            print q.image
 
+        
+        # Create response
+        response_dict = {}
+        for imageObject in query_result:
+            thumb_dict = {}
+            thumb = open(get_thumb_path(imageObject.image.url)).read()
+            thumb_dict['base64Thumb'] = base64.standard_b64encode(thumb)
+            #thumb_dict['pub_date'] = imageObject.pub_date
+            response_dict[str(imageObject.id)] = json.dumps(thumb_dict)
 
-        return HttpResponse()
+        return HttpResponse(json.dumps(response_dict), content_type='application/json')
+
 
     else:
         return HttpResponseNotAllowed(['POST'])
@@ -88,11 +99,24 @@ def get_thumbnails(request):
 # 'amount' is the amount of pictures retrived
 # 'offset' is from which place in the list to start getting the images
 def _create_sql(latitude, longitude, radius, amount, offset, sorting='distance'):
-    SQL = """SELECT id, image
-             FROM (SELECT id, image, (3959 * acos(cos(radians({lat})) * cos(radians(latitude)) * cos(radians(longitude) - radians({long})) + sin(radians({lat})) * sin(radians(latitude )))) AS distance 
+    SQL = """SELECT id, image, pub_date
+             FROM (SELECT id, image, pub_date, (3959 * acos(cos(radians({lat})) * cos(radians(latitude)) * cos(radians(longitude) - radians({long})) + sin(radians({lat})) * sin(radians(latitude )))) AS distance 
                    FROM image_server_imagemodel) AS sub_query
                    WHERE distance < {radius}
                    ORDER BY {sorting} LIMIT {amount} OFFSET {offset};""".format(lat=latitude, long=longitude, radius=radius, amount=amount, offset=offset, sorting=sorting)
     return SQL
 
 
+def _create_thumb_tar(query_result):
+    out = tarfile.open('temp.tar', 'w')
+
+
+
+def get_thumb_path(image_path):
+    parts = image_path.split('/')
+    parts.insert(-1, 'thumbs')
+    return "/".join(parts)
+'''
+def get_thumb_path(filename):
+    return 'thumbs/' + filename
+    '''
