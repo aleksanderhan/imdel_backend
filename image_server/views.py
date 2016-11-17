@@ -69,10 +69,10 @@ def get_thumbnails(request):
 
         SQL = _create_sql(latitude, longitude, radius, amount, offset)
 
-        
+        '''
         for p in ImageModel.objects.raw(SQL):
             print p.id, p.image
-        
+        '''
 
 
         return HttpResponse()
