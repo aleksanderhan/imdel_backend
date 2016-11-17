@@ -5,7 +5,7 @@ import os
 image_directory_path = os.path.abspath(os.path.join(os.path.abspath(__file__), os.pardir, os.pardir)) + '/uploaded_images/'
 
 
-def makeThumbnail(filename, size=(160, 90)):
+def makeThumbnail(filename, size=(90, 160)):
     try:
         im = Image.open(image_directory_path + filename)
         im.thumbnail(size)
