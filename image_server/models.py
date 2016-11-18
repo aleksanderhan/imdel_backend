@@ -1,12 +1,13 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.conf import settings
 
 
 def image_path(instance, filename):
 	# file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
 	#return 'user_{0}/{1}'.format(instance.user.id, filename)
-	return 'uploaded_images/{filename}'.format(filename=filename)
+	return '{filename}'.format(filename=filename)
     
 
 class ImageModel(models.Model):

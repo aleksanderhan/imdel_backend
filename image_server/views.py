@@ -1,5 +1,6 @@
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed, FileResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
 
 import json, base64
 
@@ -72,9 +73,6 @@ def get_thumbnails(request):
         # Query database
         query_result = ImageModel.objects.raw(SQL)
 
-        for q in query_result:
-            print q.image
-
         
         # Create response
         response_dict = {}
@@ -116,7 +114,7 @@ def _create_thumb_tar(query_result):
 def get_thumb_path(image_path):
     parts = image_path.split('/')
     parts.insert(-1, 'thumbs')
-    return "/".join(parts)
+    return settings.MEDIA_ROOT + "/".join(parts)
 '''
 def get_thumb_path(filename):
     return 'thumbs/' + filename

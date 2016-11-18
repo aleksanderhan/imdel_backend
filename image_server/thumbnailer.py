@@ -1,15 +1,14 @@
 from PIL import Image
 import traceback
-import os
 
-image_directory_path = os.path.abspath(os.path.join(os.path.abspath(__file__), os.pardir, os.pardir)) + '/uploaded_images/'
+from django.conf import settings
 
 
 def makeThumbnail(filename, size=(90, 160)):
     try:
-        im = Image.open(image_directory_path + filename)
+        im = Image.open(settings.MEDIA_ROOT + filename)
         im.thumbnail(size)
-        im.save(image_directory_path + 'thumbs/' + filename, "JPEG")
+        im.save(settings.MEDIA_ROOT + 'thumbs/' + filename, "JPEG")
     except:
         traceback.print_exc()
 
