@@ -82,8 +82,9 @@ def get_thumbnails(request):
             thumb_dict = {}
             thumb = open(get_thumb_path(imageObject.image.url)).read()
             thumb_dict['base64Thumb'] = base64.standard_b64encode(thumb)
+            thumb_dict['filename'] = imageObject.image.name
             #thumb_dict['pub_date'] = imageObject.pub_date
-            response_dict[str(imageObject.id)] = json.dumps(thumb_dict)
+            response_dict[imageObject.id] = thumb_dict
 
         return HttpResponse(json.dumps(response_dict), content_type='application/json')
 
