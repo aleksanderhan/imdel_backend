@@ -35,13 +35,10 @@ def upload_image(request):
 @csrf_exempt
 def get_picture(request):
     if request.method == 'POST':
-        id = request.POST['id']
+        id = int(request.POST['id'])
         imageObject = ImageModel.objects.get(pk = id)
 
-        # send image text and publication date too
- 
-        response = FileResponse(open(imageObject.image, 'rb'), content_type='image/jpeg')
-
+        response = FileResponse(open(settings.MEDIA_ROOT + imageObject.image.name, 'rb'), content_type='image/jpeg')
         return response
 
     else:
@@ -72,17 +69,19 @@ def get_thumbnails(request):
         SQL = _create_sql(latitude, longitude, radius, amount, offset)
         # Query database
         query_result = ImageModel.objects.raw(SQL)
-
         
         # Create response
         response_dict = {}
+        i = 1
         for imageObject in query_result:
             thumb_dict = {}
             thumb = open(get_thumb_path(imageObject.image.url)).read()
             thumb_dict['base64Thumb'] = base64.standard_b64encode(thumb)
             thumb_dict['filename'] = imageObject.image.name
+            thumb_dict['id'] = imageObject.id
             #thumb_dict['pub_date'] = imageObject.pub_date
-            response_dict[imageObject.id] = thumb_dict
+            response_dict[i] = thumb_dict
+            i += 1
 
         return HttpResponse(json.dumps(response_dict), content_type='application/json')
 
@@ -97,7 +96,7 @@ def get_thumbnails(request):
 # 'radius' in km
 # 'amount' is the amount of pictures retrived
 # 'offset' is from which place in the list to start getting the images
-def _create_sql(latitude, longitude, radius, amount, offset, sorting='distance'):
+def _create_sql(latitude, longitude, radius, amount, offset, sorting='id'):
     SQL = """SELECT id, image, pub_date
              FROM (SELECT id, image, pub_date, (3959 * acos(cos(radians({lat})) * cos(radians(latitude)) * cos(radians(longitude) - radians({long})) + sin(radians({lat})) * sin(radians(latitude )))) AS distance 
                    FROM image_server_imagemodel) AS sub_query
