@@ -124,5 +124,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-MEDIA_ROOT = 'imdel_upload/'
+MEDIA_ROOT = '../imdel_upload/'
 MEDIA_URL = ''
