@@ -8,7 +8,7 @@ def makeThumbnail(filename, size=(90, 160)):
     try:
         im = Image.open(settings.MEDIA_ROOT + filename)
         im.thumbnail(size)
-        im.save(settings.MEDIA_ROOT + 'thumbs/' + filename, "JPEG")
+        im.save(settings.MEDIA_ROOT + 'thumb_' + filename, "JPEG")
     except:
         traceback.print_exc()
 

@@ -80,7 +80,7 @@ def get_thumbnails(request):
             thumb_dict['filename'] = imageObject.image.name
             thumb_dict['id'] = imageObject.id
             thumb_dict['text'] = imageObject.text
-            thumb_dict['pub_date'] = imageObject.pub_date
+            thumb_dict['pub_date'] = str(imageObject.pub_date)
             response_dict[i] = thumb_dict
             i += 1
 
@@ -111,11 +111,5 @@ def _create_thumb_tar(query_result):
 
 
 
-def get_thumb_path(image_path):
-    parts = image_path.split('/')
-    parts.insert(-1, 'thumbs')
-    return settings.MEDIA_ROOT + "/".join(parts)
-'''
 def get_thumb_path(filename):
-    return 'thumbs/' + filename
-    '''
+    return settings.MEDIA_ROOT + "thumb_" + filename
