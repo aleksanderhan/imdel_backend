@@ -81,6 +81,7 @@ def get_thumbnails(request):
             thumb_dict['id'] = imageObject.id
             thumb_dict['text'] = imageObject.text
             thumb_dict['pub_date'] = str(imageObject.pub_date)
+            thumb_dict['distance']
             response_dict[i] = thumb_dict
             i += 1
 
@@ -92,22 +93,18 @@ def get_thumbnails(request):
 
 
 
-# Helper function to create sql to get all pictures within a given radius
+# Helper function to create sql query to get all pictures within a given radius
 # 'latitude' and 'longitude' in degrees
 # 'radius' in km
 # 'amount' is the amount of pictures retrived
 # 'offset' is from which place in the list to start getting the images
 def _create_sql(latitude, longitude, radius, amount, offset, sorting='distance'):
-    SQL = """SELECT id, image, pub_date, text 
+    SQL = """SELECT id, image, pub_date, text, distance  
              FROM (SELECT id, image, pub_date, text, (3959 * acos(cos(radians({lat})) * cos(radians(latitude)) * cos(radians(longitude) - radians({long})) + sin(radians({lat})) * sin(radians(latitude )))) AS distance 
                    FROM image_server_imagemodel) AS sub_query
                    WHERE distance < {radius}
                    ORDER BY {sorting} LIMIT {amount} OFFSET {offset};""".format(lat=latitude, long=longitude, radius=radius, amount=amount, offset=offset, sorting=sorting)
     return SQL
-
-
-def _create_thumb_tar(query_result):
-    out = tarfile.open('temp.tar', 'w')
 
 
 
