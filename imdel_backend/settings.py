@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['46.101.109.17', 'imdel.tk']
 # Application definition
 
 INSTALLED_APPS = [
+    'rest_framework',
     'image_server.apps.ImageServerConfig',
     'django.contrib.admin',
     'django.contrib.auth',

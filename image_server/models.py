@@ -10,10 +10,9 @@ def image_path(instance, filename):
 	return '{filename}'.format(filename=filename)
     
 
-class ImageModel(models.Model):
-    pub_date = models.DateTimeField(auto_now_add=True)
-    #uploader_ip = models.CharField()
-    image = models.FileField(upload_to=image_path)
+class PhotoModel(models.Model):
+    published_date = models.DateTimeField(auto_now_add=True)
+    image = models.ImageField(upload_to=image_path)
     text = models.CharField(max_length=200, blank=True)
     latitude = models.DecimalField(max_digits= 8, decimal_places=6)
     longitude = models.DecimalField(max_digits = 9, decimal_places=6)
