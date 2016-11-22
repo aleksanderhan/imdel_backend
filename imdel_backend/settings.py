@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['46.101.109.17', 'imdel.tk']
 # Application definition
 
 INSTALLED_APPS = [
+    'rest_framework.authtoken',
     'rest_framework',
     'image_server.apps.ImageServerConfig',
     'django.contrib.admin',
@@ -127,3 +128,15 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = '../imdel_upload/'
 MEDIA_URL = ''
+
+
+# Rest framework settings
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    )
+}

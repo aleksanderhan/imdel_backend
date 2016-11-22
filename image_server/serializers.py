@@ -1,8 +1,11 @@
 from rest_framework import serializers
-from .models import PhotoModel
+from .models import Photos
+from django.contrib.auth.models import User
 
 
 class PhotoSerializer(serializers.ModelSerializer):
+	publisher = serializers.PrimaryKeyRelatedField(many=True, queryset=User.objects.all())
+
 	class Meta:
 		model = Photos
-		fields =('image', 'text', 'latitude', 'longitude')
+		fields =('publisher', 'image', 'text', 'latitude', 'longitude')

@@ -1,5 +1,6 @@
 from django.http import HttpResponse, HttpResponseBadRequest, FileResponse
 from django.conf import settings
+from django.contrib.auth.models import User
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -8,7 +9,7 @@ from rest_framework import status
 import json, base64
 
 from .serializers import PhotoSerializer
-from .models import PhotoModel
+from .models import Photos
 
 from thumbnailer import makeThumbnail
 
@@ -16,6 +17,7 @@ from thumbnailer import makeThumbnail
 class PublishPhoto(APIView):
     def post(self, request):
         if request.method == 'POST':
+            print User.objects.all()
             serializer = PhotoSerializer(data=request.data)
             if serializer.is_valid(raise_exception=True):
                 serializer.save()
@@ -66,7 +68,7 @@ class FetchThumbnails(APIView):
             i = 1
             for photoObject in query_result:
                 thumb_dict = {}
-                thumb = open(get_thumb_path(photoObject.image.url)).read()
+                thumb = open(_get_thumb_path(photoObject.image.url)).read()
                 thumb_dict['base64Thumb'] = base64.standard_b64encode(thumb)
                 thumb_dict['filename'] = photoObject.image.name
                 thumb_dict['id'] = photoObject.id
@@ -93,5 +95,5 @@ def _create_sql_query(latitude, longitude, radius, amount, offset, sorting='dist
     return query
 
 
-def get_thumb_path(filename):
+def _get_thumb_path(filename):
     return settings.MEDIA_ROOT + "thumb_" + filename
