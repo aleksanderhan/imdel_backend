@@ -14,7 +14,7 @@ from thumbnailer import makeThumbnail
 
 
 class PublishPhoto(APIView):
-    def post(self, request, format=None):
+    def post(self, request):
         if request.method == 'POST':
             serializer = PhotoSerializer(data=request.data)
             if serializer.is_valid(raise_exception=True):
@@ -27,12 +27,10 @@ class PublishPhoto(APIView):
                 return Response(status=status.HTTP_201_CREATED)
 
 
-class FetchPhoto(APIView):
-    def post(request):
-        if request.method == 'POST':
-            id = int(request.POST['id'])
-            print id
-            photoObject = PhotoModel.objects.get(pk = id)
+class GetPhoto(APIView):
+    def get(self, request, id):
+        if request.method == 'GET':
+            photoObject = Photos.objects.get(pk=id)
             print photoObject
 
             response = FileResponse(open(settings.MEDIA_ROOT + photoObject.image.name, 'rb'), content_type='image/jpeg')
@@ -40,7 +38,7 @@ class FetchPhoto(APIView):
 
 
 class FetchThumbnails(APIView):
-    def post(request):
+    def post(self, request):
         if request.method == 'POST':
             latitude = request.POST['latitude']
             longitude = request.POST['longitude']
@@ -59,9 +57,9 @@ class FetchThumbnails(APIView):
                 return HttpResponseBadRequest()
 
             # Create sql query
-            SQL = _create_sql(latitude, longitude, radius, amount, offset)
+            query = _create_sql_query(latitude, longitude, radius, amount, offset)
             # Query database
-            query_result = ImageModel.objects.raw(SQL)
+            query_result = Photos.objects.raw(query)
             
             # Create response
             response_dict = {}
@@ -81,18 +79,18 @@ class FetchThumbnails(APIView):
             return HttpResponse(json.dumps(response_dict), content_type='application/json')
 
 
-def _create_sql(latitude, longitude, radius, amount, offset, sorting='distance'):
+def _create_sql_query(latitude, longitude, radius, amount, offset, sorting='distance'):
     # Helper function to create sql query to get all pictures within a given radius
     # 'latitude' and 'longitude' in degrees
     # 'radius' in km
     # 'amount' is the amount of pictures retrived
     # 'offset' is from which place in the list to start getting the images
-    SQL = """SELECT id, image, pub_date, text, distance  
-             FROM (SELECT id, image, pub_date, text, (3959 * acos(cos(radians({lat})) * cos(radians(latitude)) * cos(radians(longitude) - radians({long})) + sin(radians({lat})) * sin(radians(latitude )))) AS distance 
-                   FROM image_server_imagemodel) AS sub_query
-                   WHERE distance < {radius}
-                   ORDER BY {sorting} LIMIT {amount} OFFSET {offset};""".format(lat=latitude, long=longitude, radius=radius, amount=amount, offset=offset, sorting=sorting)
-    return SQL
+    query = """SELECT id, image, pub_date, text, distance  
+               FROM (SELECT id, image, pub_date, text, (3959 * acos(cos(radians({lat})) * cos(radians(latitude)) * cos(radians(longitude) - radians({long})) + sin(radians({lat})) * sin(radians(latitude )))) AS distance 
+                     FROM image_server_photos) AS sub_query
+                     WHERE distance < {radius}
+                     ORDER BY {sorting} LIMIT {amount} OFFSET {offset};""".format(lat=latitude, long=longitude, radius=radius, amount=amount, offset=offset, sorting=sorting)
+    return query
 
 
 def get_thumb_path(filename):

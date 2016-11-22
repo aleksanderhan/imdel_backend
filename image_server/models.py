@@ -10,7 +10,8 @@ def image_path(instance, filename):
 	return '{filename}'.format(filename=filename)
     
 
-class PhotoModel(models.Model):
+class Photos(models.Model):
+    publisher = models.ForeignKey('auth.User', related_name='photo', on_delete=models.CASCADE)
     published_date = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to=image_path)
     text = models.CharField(max_length=200, blank=True)
