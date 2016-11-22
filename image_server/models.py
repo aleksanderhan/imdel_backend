@@ -9,9 +9,9 @@ from rest_framework.authtoken.models import Token
 
 
 def image_path(instance, filename):
-	# file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
-	#return 'user_{0}/{1}'.format(instance.user.id, filename)
-	return '{user}/{filename}'.format(user=instance.user.id, filename=filename)
+    # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
+    #return 'user_{0}/{1}'.format(instance.user.id, filename)
+    return '{publisher}/{filename}'.format(publisher=instance.publisher, filename=filename)
 
 
 # This code is triggered whenever a new user has been created and saved to the database
