@@ -16,8 +16,13 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
+from rest_framework.authtoken import views as authviews
+
+from . import views
 
 urlpatterns = [
 	url(r'^', include('image_server.urls')),
     url(r'^admin/', admin.site.urls),
+    url(r'^register/', views.Register.as_view(), name='register'),
+    url(r'^login/', authviews.obtain_auth_token, name='login'),
 ]

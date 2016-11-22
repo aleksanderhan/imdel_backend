@@ -1,9 +1,9 @@
-from django.conf.urls import url
+from django.conf.urls import url, include
 
 from . import views
 
 urlpatterns = [
-	url(r'^get_thumbnails', views.get_thumbnails, name='get_thumbnails'),
-	url(r'^get_picture', views.get_picture, name='get_picture'),
-    url(r'^upload_image', views.upload_image, name='upload_image'),
+	url(r'^fetch_thumbnails/', views.FetchThumbnails.as_view(), name='fetch_thumbnails'),
+	url(r'^get_photo/(?P<id>[0-9]+)/', views.GetPhoto.as_view(), name='get_photo'),
+    url(r'^publish_photo/', views.PublishPhoto.as_view(), name='publish_photo'),
 ]
