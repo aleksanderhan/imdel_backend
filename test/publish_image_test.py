@@ -3,13 +3,13 @@ from time import time
 import traceback
 
 data =  {
-        'publisher' : 1,
+        'publisher' : 5,
         'text' : 'abc',
         'latitude' : '59.913869',
         'longitude' : '10.75225',
         }
 
-headers = {'Authorization': 'Token 05b759da3739aae07853e7210137eab34d100392'}
+headers = {'Authorization': 'Token 16b333307185048cecfbd76994aec125e91ffa11'}
 
 filename = 'test_image.jpg'
 temp_file_name = str(time()) + '.jpg'
@@ -21,7 +21,7 @@ url = 'http://127.0.0.1:8000/publish_photo/'
 
 try:
     r = requests.post(url, files = files, data=data, headers=headers)
-    print(r.text)
+    print(r)
 except:
     traceback.print_exc()
 os.rename(temp_file_name, filename)

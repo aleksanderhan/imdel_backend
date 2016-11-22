@@ -4,11 +4,12 @@ import traceback
 from django.conf import settings
 
 
-def makeThumbnail(filename, size=(90, 160)):
+def makeThumbnail(publisher, filename, size=(90, 160)):
     try:
-        im = Image.open(settings.MEDIA_ROOT + filename)
+    	root = settings.MEDIA_ROOT + '/' + publisher + '/'
+        im = Image.open(root + filename)
         im.thumbnail(size)
-        im.save(settings.MEDIA_ROOT + 'thumb_' + filename, "JPEG")
+        im.save(root + 'thumb_' + filename, "JPEG")
     except:
         traceback.print_exc()
 

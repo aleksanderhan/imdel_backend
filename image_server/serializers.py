@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 
 class PhotoSerializer(serializers.ModelSerializer):
-	publisher = serializers.PrimaryKeyRelatedField(many=True, queryset=User.objects.all())
+	publisher = serializers.PrimaryKeyRelatedField(many=False, queryset=User.objects.all())
 
 	class Meta:
 		model = Photos
