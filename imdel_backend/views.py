@@ -24,7 +24,7 @@ class Register(APIView):
 
                 return HttpResponse(json.dumps({"user_id" : user.id, "token" : token.key}))
             except IntegrityError:
-                return HttpResponseBadRequest(json.dumps({"status":"failed", "reason":"username taken"}))
+                return HttpResponseBadRequest(json.dumps({"reason":"username taken"}))
 
 
 class Login(APIView):
@@ -40,5 +40,5 @@ class Login(APIView):
                 else:
                     return HttpResponseBadRequest(json.dumps({"status":"failed", "reason":"wrong password"}))
             except:
-                return HttpResponseBadRequest(json.dumps({"status":"failed", "reason":"username not registered"}))
+                return HttpResponseBadRequest(json.dumps({"reason":"username not registered"}))
 

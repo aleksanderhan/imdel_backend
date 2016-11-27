@@ -69,7 +69,7 @@ class FetchThumbnails(APIView):
                 thumb_dict = {}
                 thumb = open(_get_thumb_path(photoObject.image.url)).read()
                 thumb_dict['base64Thumb'] = base64.standard_b64encode(thumb)
-                thumb_dict['filename'] = photoObject.image.name
+                thumb_dict['filename'] = photoObject.image.name.split('/')[-1]
                 thumb_dict['id'] = photoObject.id
                 thumb_dict['text'] = photoObject.text
                 thumb_dict['published_date'] = str(photoObject.published_date)
